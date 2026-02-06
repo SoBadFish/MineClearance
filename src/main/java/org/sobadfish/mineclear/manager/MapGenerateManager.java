@@ -9,7 +9,9 @@ import cn.nukkit.block.BlockStairsAndesitePolished;
 import cn.nukkit.block.BlockStone;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.level.Level;
+import cn.nukkit.level.ParticleEffect;
 import cn.nukkit.level.Position;
+import cn.nukkit.level.Sound;
 import cn.nukkit.nbt.tag.CompoundTag;
 import org.sobadfish.mineclear.block.MineClearDisplayBlock;
 import org.sobadfish.mineclear.block.MineClearGroundBlock;
@@ -209,21 +211,45 @@ public class MapGenerateManager {
             return false;
         }
         // 检查是否是雷
+        boolean isMineHit = false;
         for (int mine : gameArea.mines) {
             if (mine == index) {
-                // 挖到雷，生成雷实体
-                Position pos = new Position(block.x + 0.5, block.y , block.z + 0.5, block.getLevel());
-                CompoundTag compoundTag =  Entity.getDefaultNBT(pos);
+                isMineHit = true;
+                break;
+            }
+        }
+
+        // 如果挖到雷，显示所有剩余的雷
+        if (isMineHit) {
+            //给个炸开的粒子
+            block.getLevel().addSound(block, Sound.CAULDRON_EXPLODE);
+            block.getLevel().addParticleEffect(block, ParticleEffect.LARGE_EXPLOSION_LEVEL);
+            // 遍历所有雷的位置，逐个生成雷实体并显示
+            for (int mineIndex : gameArea.mines) {
+                // 反向计算雷的x、z坐标（从index还原坐标）
+                int x = config.startX + (mineIndex % width);
+                int z = config.startZ + (mineIndex / width);
+                int y = config.y;
+
+                // 雷实体的显示位置（居中）
+                Position minePos = new Position(x + 0.5, y, z + 0.5, block.getLevel());
+                CompoundTag compoundTag = Entity.getDefaultNBT(minePos);
                 compoundTag.putString("roomName", config.roomName);
-                MineClearMineEntity mineEntity = new MineClearMineEntity(block.getChunk(),
-                        compoundTag);
+
+                // 生成雷实体
+                MineClearMineEntity mineEntity = new MineClearMineEntity(block.getChunk(), compoundTag);
                 mineEntity.roomName = config.roomName;
                 mineEntity.spawnToAll();
-                gameArea.clearMineEntity = mineEntity;
-                Position pos1 = new Position(block.x, block.y, block.z, block.getLevel());
-                block.getLevel().setBlock(pos1, Block.get(0));
-                return true;
+
+                // 将雷实体存入游戏区域
+                gameArea.mineEntitys.put(mineIndex, mineEntity);
+
+                // 清除雷位置的方块（显示雷实体）
+                Position blockPos = new Position(x, y, z, block.getLevel());
+                block.getLevel().setBlock(blockPos, Block.get(0));
             }
+            // 挖到雷，返回true
+            return true;
         }
 
         // 不是雷，计算周围雷数

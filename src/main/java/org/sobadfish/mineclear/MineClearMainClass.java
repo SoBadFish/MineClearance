@@ -9,7 +9,12 @@ import cn.nukkit.event.player.PlayerFormRespondedEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 
+import cn.nukkit.form.element.ElementInput;
+import cn.nukkit.form.element.ElementSlider;
 import cn.nukkit.form.response.FormResponseCustom;
+import cn.nukkit.form.response.FormResponseModal;
+import cn.nukkit.form.window.FormWindowCustom;
+import cn.nukkit.form.window.FormWindowModal;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.PluginBase;
@@ -40,6 +45,8 @@ public class MineClearMainClass extends PluginBase implements Listener {
     private static MineClearMainClass instance;
 
     public static final int FORM_ID_CREATE = 10022;
+
+    public static final int FORM_ID_NEXT = 10023;
 
     public LinkedHashMap<String,GameAreaConfig> gameConfigAreas = new LinkedHashMap<>();
 
@@ -97,7 +104,20 @@ public class MineClearMainClass extends PluginBase implements Listener {
             return;
         }
         Player player = event.getPlayer();
+        if(event.getResponse() instanceof FormResponseModal model){
+            if (event.getFormID() == MineClearMainClass.FORM_ID_NEXT){
+                if(clickRoom.containsKey(player) && model.getClickedButtonId() == 0){
+                    GameArea gameArea = clickRoom.get(player);
+                    if(gameArea != null){
+                        gameArea.resetGame();
+                    }
+                }
+                return;
+            }
+        }
+
         if(event.getResponse() instanceof FormResponseCustom response){
+
              if (event.getFormID() == MineClearMainClass.FORM_ID_CREATE) {
                     String roomName = response.getInputResponse(0);
                     int width = (int) response.getSliderResponse(1);
@@ -137,7 +157,7 @@ public class MineClearMainClass extends PluginBase implements Listener {
      * 保存游戏区域配置到配置文件
      * @param config 游戏区域配置
      */
-    private void saveToConfig(GameAreaConfig config) {
+    public void saveToConfig(GameAreaConfig config) {
         // 获取配置文件
         File configFile = new File(MineClearMainClass.getInstance().getDataFolder() + "/room.yml");
         Config yamlConfig = new Config(configFile, Config.YAML);
@@ -223,6 +243,8 @@ public class MineClearMainClass extends PluginBase implements Listener {
         }
     }
 
+    public LinkedHashMap<Player,GameArea> clickRoom = new LinkedHashMap<>();
+
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -234,19 +256,19 @@ public class MineClearMainClass extends PluginBase implements Listener {
             if (rArea.gameAreaConfig.startX <= (int) pos.x && (int) pos.x <= rArea.gameAreaConfig.endX &&
                     rArea.gameAreaConfig.startZ <= (int) pos.z && (int) pos.z <= rArea.gameAreaConfig.endZ) {
                 // 点击的位置在当前游戏区域内
-
                 gameArea = rArea;
                 break;
             }
         }
 
 
-
-
-
         if (gameArea != null) {
             if(gameArea.isRunning == 2){
-                gameArea.resetGame();
+                clickRoom.put(player,gameArea);
+                FormWindowModal form = new FormWindowModal("重新开启","是否重新开始游戏","是的","不了");
+                // 显示表单
+                player.showFormWindow(form, MineClearMainClass.FORM_ID_NEXT);
+//                gameArea.resetGame();
             }
 
             int x = (int) pos.x;
@@ -266,8 +288,9 @@ public class MineClearMainClass extends PluginBase implements Listener {
 
                 if (isMine) {
                     gameArea.isRunning = 2;
-                    player.sendMessage("§c你挖到雷了！游戏结束");
-
+                    long endTime = System.currentTimeMillis();
+                    long timeUsed = (endTime - gameArea.startTime) / 1000; // 转换为秒
+                    player.sendTitle("§c挑战失败","§7游戏结束，用时：" + timeUsed + "秒");
                 } else {
                     // 检查是否获胜
                     if (MapGenerateManager.checkWin(gameArea)) {
