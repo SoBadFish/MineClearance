@@ -1,0 +1,22 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "mineclear:piece",
+			"materials": {
+				"default": "entity_alphatest",
+				"invisible": ""
+			},
+			"textures": {
+				"default": "textures/entity/block_piece"
+
+			},
+			"geometry": {
+				"default": "geometry.mine.clearance.piece"
+			},
+			"render_controllers": [ 
+				"controller.render.item_default"
+			]
+		}
+	}
+}

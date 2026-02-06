@@ -1,0 +1,22 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "mineclear:mine",
+			"materials": {
+				"default": "entity_alphatest",
+				"invisible": ""
+			},
+			"textures": {
+				"default": "textures/entity/block_mine"
+
+			},
+			"geometry": {
+				"default": "geometry.mine.clear.mine"
+			},
+			"render_controllers": [ 
+				"controller.render.item_default"
+			]
+		}
+	}
+}

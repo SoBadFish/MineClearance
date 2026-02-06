@@ -1,0 +1,28 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "mineclear:number",
+			"materials": {
+				"default": "entity_alphatest",
+				"invisible": ""
+			},
+			"textures": {
+				"default": "textures/entity/mine_1",
+				"m2": "textures/entity/mine_2",
+				"m3": "textures/entity/mine_3",
+				"m4": "textures/entity/mine_4",
+				"m5": "textures/entity/mine_5",
+				"m6": "textures/entity/mine_6",
+				"m7": "textures/entity/mine_7",
+				"m8": "textures/entity/mine_8"
+			},
+			"geometry": {
+				"default": "geometry.mine.clearance.number"
+			},
+			"render_controllers": [ 
+				"controller.render.mine_clear"
+			]
+		}
+	}
+}

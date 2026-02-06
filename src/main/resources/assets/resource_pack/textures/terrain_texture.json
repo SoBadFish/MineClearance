@@ -1,0 +1,13 @@
+{
+  "resource_pack_name": "vanilla",
+  "texture_name": "atlas.terrain",
+  "texture_data": {
+    "block_ground": {
+      "textures": "textures/blocks/block_ground"
+    },
+    "block_display": {
+      "textures": "textures/blocks/block_display"
+    }
+
+  }
+}

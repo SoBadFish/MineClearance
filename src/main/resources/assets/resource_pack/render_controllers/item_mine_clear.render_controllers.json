@@ -1,0 +1,26 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+    "controller.render.mine_clear": {
+      "arrays": {
+        "textures": {
+          "Array.mines": [
+            "Texture.default",
+            "Texture.m2",
+            "Texture.m3",
+            "Texture.m4",
+            "Texture.m5",
+            "Texture.m6",
+            "Texture.m7",
+            "Texture.m8"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "textures": [
+        "Array.mines[q.variant]"
+      ],
+      "materials": [ { "*": "Material.default" } ]
+    }
+  }
+}

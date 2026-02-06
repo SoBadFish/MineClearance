@@ -1,0 +1,6 @@
+name: MineClear
+api: 1.0.11
+main: org.sobadfish.mineclear.MineClearMainClass
+version: 1.0.0
+author: Sobadfish
+load: POSTWORLD
