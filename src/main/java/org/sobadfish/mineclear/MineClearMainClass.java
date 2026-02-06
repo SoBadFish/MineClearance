@@ -117,9 +117,13 @@ public class MineClearMainClass extends PluginBase implements Listener {
         }
 
         if(event.getResponse() instanceof FormResponseCustom response){
-
              if (event.getFormID() == MineClearMainClass.FORM_ID_CREATE) {
                     String roomName = response.getInputResponse(0);
+                    if(gameConfigAreas.containsKey(roomName)){
+                        player.sendMessage(roomName+" 已存在");
+                        return;
+                    }
+
                     int width = (int) response.getSliderResponse(1);
                     int height = (int) response.getSliderResponse(2);
                     int mineCount = (int) response.getSliderResponse(3);
