@@ -57,11 +57,11 @@ public class TestCommand extends Command {
                 // 显示表单
                 player.showFormWindow(form, MineClearMainClass.FORM_ID_CREATE);
             }
-            if(args.length > 1) {
+            if(args.length >= 1) {
                 if(args[0].equalsIgnoreCase("remove")) {
-                    if(args.length > 2) {
+                    if(args.length > 1) {
                         String name = args[1];
-                        if(MineClearMainClass.getInstance().gameAreas.containsKey(name)) {
+                        if (MineClearMainClass.getInstance().gameAreas.containsKey(name)) {
                             GameArea gameArea = MineClearMainClass.getInstance().gameAreas.get(name);
                             gameArea.breakMap();
                             MineClearMainClass.getInstance().gameAreas.remove(name);
@@ -69,15 +69,15 @@ public class TestCommand extends Command {
                             MineClearMainClass.getInstance().clickRoom.clear();
                             MineClearMainClass.getInstance().gameConfigAreas.remove(name);
                             MineClearMainClass.getInstance().resetAllGameMap();
-                            for(GameAreaConfig gameAreaConfig: MineClearMainClass.getInstance().gameConfigAreas.values()){
+                            for (GameAreaConfig gameAreaConfig : MineClearMainClass.getInstance().gameConfigAreas.values()) {
                                 MineClearMainClass.getInstance().saveToConfig(gameAreaConfig);
                             }
                             player.sendMessage(MineClearMainClass.I18N.tr(player.getLanguageCode(), "mineclear.game.removed", name));
-                        }else{
+                        } else {
                             player.sendMessage(MineClearMainClass.I18N.tr(player.getLanguageCode(), "mineclear.game.notfound", name));
                         }
-
                     }
+
                 }
                 if(args[0].equalsIgnoreCase("clear")) {
                     //TODO 清空地图中存在的实体
