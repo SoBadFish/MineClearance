@@ -46,7 +46,7 @@ public class TestCommand extends Command {
             if(args.length > 1) {
                 if(args[0].equalsIgnoreCase("remove")) {
                     if(args.length > 2) {
-                        String name = args[2];
+                        String name = args[1];
                         if(MineClearMainClass.getInstance().gameAreas.containsKey(name)) {
                             GameArea gameArea = MineClearMainClass.getInstance().gameAreas.get(name);
                             gameArea.breakMap();
