@@ -5,27 +5,22 @@ import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.custom.EntityManager;
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.Listener;
+import cn.nukkit.event.entity.EntityLevelChangeEvent;
 import cn.nukkit.event.player.PlayerFormRespondedEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
-
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
-
 import cn.nukkit.form.window.FormWindowModal;
+import cn.nukkit.lang.LangCode;
+import cn.nukkit.lang.PluginI18n;
+import cn.nukkit.lang.PluginI18nManager;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.PluginTask;
 import cn.nukkit.utils.Config;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.sobadfish.mineclear.block.MineClearDisplayBlock;
 import org.sobadfish.mineclear.block.MineClearGroundBlock;
 import org.sobadfish.mineclear.command.TestCommand;
@@ -35,11 +30,9 @@ import org.sobadfish.mineclear.entity.MineClearPieceEntity;
 import org.sobadfish.mineclear.game.GameArea;
 import org.sobadfish.mineclear.game.GameAreaConfig;
 import org.sobadfish.mineclear.manager.MapGenerateManager;
-import cn.nukkit.event.Listener;
-import cn.nukkit.event.entity.EntityLevelChangeEvent;
-import cn.nukkit.lang.PluginI18n;
-import cn.nukkit.lang.PluginI18nManager;
-import cn.nukkit.lang.LangCode;
+
+import java.io.File;
+import java.util.*;
 
 public class MineClearMainClass extends PluginBase implements Listener {
 
@@ -314,6 +307,7 @@ public class MineClearMainClass extends PluginBase implements Listener {
                     );
                     // 显示表单
                     player.showFormWindow(form, MineClearMainClass.FORM_ID_NEXT);
+                    return;
 //                gameArea.resetGame();
                 }
 
