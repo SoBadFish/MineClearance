@@ -37,8 +37,14 @@ import org.sobadfish.mineclear.game.GameAreaConfig;
 import org.sobadfish.mineclear.manager.MapGenerateManager;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityLevelChangeEvent;
+import cn.nukkit.lang.PluginI18n;
+import cn.nukkit.lang.PluginI18nManager;
+import cn.nukkit.lang.LangCode;
 
 public class MineClearMainClass extends PluginBase implements Listener {
+
+    public static PluginI18n I18N;
+    public static LangCode serverLangCode;
 
     private static MineClearMainClass instance;
 
@@ -70,11 +76,42 @@ public class MineClearMainClass extends PluginBase implements Listener {
         EntityManager.get().registerDefinition(MineClearPieceEntity.DEF_NUMBER);
         MineClearDisplayBlock.register();
         MineClearGroundBlock.register();
+        
+        // 注册插件的 i18n
+        I18N = PluginI18nManager.register(this);
+        initServerLangCode();
+    }
+    
+    /**
+     * 初始化服务器语言代码
+     */
+    public void initServerLangCode() {
+        switch (Server.getInstance().getLanguage().getLang()) {
+            case "eng" -> {
+                serverLangCode = LangCode.en_US;
+            }
+            case "chs" -> {
+                serverLangCode = LangCode.zh_CN;
+            }
+            case "deu" -> {
+                serverLangCode = LangCode.de_DE;
+            }
+            case "rus" -> {
+                serverLangCode = LangCode.ru_RU;
+            }
+            default -> {
+                try {
+                    serverLangCode = LangCode.valueOf(Server.getInstance().getLanguage().getLang());
+                } catch (IllegalArgumentException e) {
+                    serverLangCode = LangCode.en_US;
+                }
+            }
+        }
     }
 
     @Override
     public void onEnable() {
-        this.getLogger().info("扫雷游戏正在启动");
+        this.getLogger().info(I18N.tr(serverLangCode, "mineclear.log.starting"));
         this.getServer().getCommandMap().register("mineclear",new TestCommand("mt"));
         this.getServer().getPluginManager().registerEvents(this,this);
         //TODO 使用配置文件加载游戏区域
@@ -93,7 +130,7 @@ public class MineClearMainClass extends PluginBase implements Listener {
     
     @Override
     public void onDisable() {
-        this.getLogger().info("扫雷游戏正在关闭，还原游戏区域...");
+        this.getLogger().info(I18N.tr(serverLangCode, "mineclear.log.stopping"));
         resetAllGameMap();
     }
 
@@ -119,7 +156,7 @@ public class MineClearMainClass extends PluginBase implements Listener {
              if (event.getFormID() == MineClearMainClass.FORM_ID_CREATE) {
                     String roomName = response.getInputResponse(0);
                     if(gameConfigAreas.containsKey(roomName)){
-                        player.sendMessage(roomName+" 已存在");
+                        player.sendMessage(I18N.tr(player.getLanguageCode(), "mineclear.game.exist", roomName));
                         return;
                     }
 
@@ -150,7 +187,7 @@ public class MineClearMainClass extends PluginBase implements Listener {
                     // 保存到配置文件
                     saveToConfig(config);
                     
-                    player.sendMessage("§a扫雷游戏区域已创建！点击方块开始游戏");
+                    player.sendMessage(I18N.tr(player.getLanguageCode(), "mineclear.game.created"));
                 }
         }
 
@@ -269,7 +306,12 @@ public class MineClearMainClass extends PluginBase implements Listener {
             if (gameArea != null) {
                 if (gameArea.isRunning == 2) {
                     clickRoom.put(player, gameArea);
-                    FormWindowModal form = new FormWindowModal("重新开启", "是否重新开始游戏", "是的", "不了");
+                    FormWindowModal form = new FormWindowModal(
+                            I18N.tr(player.getLanguageCode(), "mineclear.form.reset.title"),
+                            I18N.tr(player.getLanguageCode(), "mineclear.form.reset.content"),
+                            I18N.tr(player.getLanguageCode(), "mineclear.form.reset.yes"),
+                            I18N.tr(player.getLanguageCode(), "mineclear.form.reset.no")
+                    );
                     // 显示表单
                     player.showFormWindow(form, MineClearMainClass.FORM_ID_NEXT);
 //                gameArea.resetGame();
@@ -295,13 +337,14 @@ public class MineClearMainClass extends PluginBase implements Listener {
                         long endTime = System.currentTimeMillis();
                         long timeUsed = (endTime - gameArea.startTime) / 1000; // 转换为秒
                         player.sendTitle("§c挑战失败", "§7游戏结束，用时：" + timeUsed + "秒");
+                        player.sendMessage(I18N.tr(player.getLanguageCode(), "mineclear.game.mine", String.valueOf(timeUsed)));
                     } else {
                         // 检查是否获胜
                         if (MapGenerateManager.checkWin(gameArea)) {
                             gameArea.isRunning = 2;
                             long endTime = System.currentTimeMillis();
                             long timeUsed = (endTime - gameArea.startTime) / 1000; // 转换为秒
-                            player.sendMessage("§a恭喜你！扫雷成功，用时：" + timeUsed + "秒");
+                            player.sendMessage(I18N.tr(player.getLanguageCode(), "mineclear.game.win", String.valueOf(timeUsed)));
                             player.sendTitle("§a恭喜！", "§7游戏结束，用时：" + timeUsed + "秒");
                             // 保存用时到 player.yml
                             savePlayerTime(player, gameArea.gameAreaConfig.roomName, timeUsed);
@@ -330,7 +373,7 @@ public class MineClearMainClass extends PluginBase implements Listener {
                 // 如果距离超过5米，重置游戏
                 if (distance > (Math.abs(gameArea.gameAreaConfig.endX - gameArea.gameAreaConfig.startX)) / 2f + 5) {
                     gameArea.resetGame();
-                    player.sendMessage("§c你离开游戏区域太远，游戏已重置");
+                    player.sendMessage(I18N.tr(player.getLanguageCode(), "mineclear.game.reset"));
                 }
                 break;
             }
@@ -346,7 +389,7 @@ public class MineClearMainClass extends PluginBase implements Listener {
                 if (gameArea.player == player && gameArea.isRunning == 1) {
                     // 玩家切换地图，重置游戏
                     gameArea.resetGame();
-                    player.sendMessage("§c你切换了地图，游戏已重置");
+                    player.sendMessage(I18N.tr(player.getLanguageCode(), "mineclear.game.levelchange"));
                     break;
                 }
             }

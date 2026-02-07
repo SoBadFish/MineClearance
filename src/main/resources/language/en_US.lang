@@ -1,0 +1,32 @@
+# MineClear Plugin English Language File
+
+# Command related
+mineclear.command.create.description=Create a mine clearance game area
+mineclear.command.remove.description=Delete the specified mine clearance game area
+
+# Game related
+mineclear.game.created=§aMine clearance game area created! Click on blocks to start the game
+mineclear.game.removed=§a{%0} deleted successfully
+mineclear.game.notfound=§cDeletion failed {%0} does not exist
+mineclear.game.exist=§c{%0} already exists
+mineclear.game.mine=§cYou hit a mine! Game over, time used: {%0} seconds
+mineclear.game.win=§aCongratulations! Mine clearance successful, time used: {%0} seconds
+mineclear.game.reset=§cYou are too far from the game area, game reset
+mineclear.game.levelchange=§cYou changed the map, game reset
+
+# Form related
+mineclear.form.title=Create Mine Clearance Game Area
+mineclear.form.roomname=Room Name
+mineclear.form.roomname.placeholder=Enter the name of the game area
+mineclear.form.roomname.default=Test Room
+mineclear.form.width=Width
+mineclear.form.height=Height
+mineclear.form.minecount=Mine Count
+mineclear.form.reset.title=Restart
+mineclear.form.reset.content=Do you want to restart the game
+mineclear.form.reset.yes=Yes
+mineclear.form.reset.no=No
+
+# Log related
+mineclear.log.starting=Mine clearance game is starting
+mineclear.log.stopping=Mine clearance game is closing, restoring game area...

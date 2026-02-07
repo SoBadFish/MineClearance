@@ -1,0 +1,32 @@
+# 扫雷游戏插件中文语言文件
+
+# 命令相关
+mineclear.command.create.description=创建扫雷游戏区域
+mineclear.command.remove.description=删除指定的扫雷游戏区域
+
+# 游戏相关
+mineclear.game.created=§a扫雷游戏区域已创建！点击方块开始游戏
+mineclear.game.removed=§a{%0} 删除成功
+mineclear.game.notfound=§c删除失败 {%0} 不存在
+mineclear.game.exist=§c{%0} 已存在
+mineclear.game.mine=§c你挖到雷了！游戏结束，用时：{%0}秒
+mineclear.game.win=§a恭喜你！扫雷成功，用时：{%0}秒
+mineclear.game.reset=§c你离开游戏区域太远，游戏已重置
+mineclear.game.levelchange=§c你切换了地图，游戏已重置
+
+# 表单相关
+mineclear.form.title=创建扫雷游戏区域
+mineclear.form.roomname=房间名称
+mineclear.form.roomname.placeholder=输入游戏区域的名称
+mineclear.form.roomname.default=测试房间
+mineclear.form.width=宽度
+mineclear.form.height=高度
+mineclear.form.minecount=雷数
+mineclear.form.reset.title=重新开启
+mineclear.form.reset.content=是否重新开始游戏
+mineclear.form.reset.yes=是的
+mineclear.form.reset.no=不了
+
+# 日志相关
+mineclear.log.starting=扫雷游戏正在启动
+mineclear.log.stopping=扫雷游戏正在关闭，还原游戏区域...
