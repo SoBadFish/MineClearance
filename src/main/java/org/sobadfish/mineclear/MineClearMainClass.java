@@ -251,63 +251,65 @@ public class MineClearMainClass extends PluginBase implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        //TODO 根据交互的位置与坐标范围 获取房间
-        Position pos = event.getBlock();
-        GameArea gameArea = null;
-        for(GameArea rArea : gameAreas.values()){
-            if (rArea.gameAreaConfig.startX <= (int) pos.x && (int) pos.x <= rArea.gameAreaConfig.endX &&
-                    rArea.gameAreaConfig.startZ <= (int) pos.z && (int) pos.z <= rArea.gameAreaConfig.endZ) {
-                // 点击的位置在当前游戏区域内
-                gameArea = rArea;
-                break;
-            }
-        }
-
-
-        if (gameArea != null) {
-            if(gameArea.isRunning == 2){
-                clickRoom.put(player,gameArea);
-                FormWindowModal form = new FormWindowModal("重新开启","是否重新开始游戏","是的","不了");
-                // 显示表单
-                player.showFormWindow(form, MineClearMainClass.FORM_ID_NEXT);
-//                gameArea.resetGame();
-            }
-
-            int x = (int) pos.x;
-            int z = (int) pos.z;
-
-            // 检查点击的方块是否在游戏区域内
-            if (x >= gameArea.gameAreaConfig.startX && x <= gameArea.gameAreaConfig.endX &&
-                z >= gameArea.gameAreaConfig.startZ && z <= gameArea.gameAreaConfig.endZ) {
-                // 第一次点击，开始游戏
-                if (gameArea.isRunning == 0) {
-                    gameArea.isRunning = 1;
-                    gameArea.player = player;
-                    gameArea.startTime = System.currentTimeMillis();
+        if(event.getAction() == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+            Player player = event.getPlayer();
+            //TODO 根据交互的位置与坐标范围 获取房间
+            Position pos = event.getBlock();
+            GameArea gameArea = null;
+            for (GameArea rArea : gameAreas.values()) {
+                if (rArea.gameAreaConfig.startX <= (int) pos.x && (int) pos.x <= rArea.gameAreaConfig.endX &&
+                        rArea.gameAreaConfig.startZ <= (int) pos.z && (int) pos.z <= rArea.gameAreaConfig.endZ) {
+                    // 点击的位置在当前游戏区域内
+                    gameArea = rArea;
+                    break;
                 }
-                // 挖掘方块
-                boolean isMine = MapGenerateManager.digBlock(player, pos, gameArea);
+            }
 
-                if (isMine) {
-                    gameArea.isRunning = 2;
-                    long endTime = System.currentTimeMillis();
-                    long timeUsed = (endTime - gameArea.startTime) / 1000; // 转换为秒
-                    player.sendTitle("§c挑战失败","§7游戏结束，用时：" + timeUsed + "秒");
-                } else {
-                    // 检查是否获胜
-                    if (MapGenerateManager.checkWin(gameArea)) {
+
+            if (gameArea != null) {
+                if (gameArea.isRunning == 2) {
+                    clickRoom.put(player, gameArea);
+                    FormWindowModal form = new FormWindowModal("重新开启", "是否重新开始游戏", "是的", "不了");
+                    // 显示表单
+                    player.showFormWindow(form, MineClearMainClass.FORM_ID_NEXT);
+//                gameArea.resetGame();
+                }
+
+                int x = (int) pos.x;
+                int z = (int) pos.z;
+
+                // 检查点击的方块是否在游戏区域内
+                if (x >= gameArea.gameAreaConfig.startX && x <= gameArea.gameAreaConfig.endX &&
+                        z >= gameArea.gameAreaConfig.startZ && z <= gameArea.gameAreaConfig.endZ) {
+                    // 第一次点击，开始游戏
+                    if (gameArea.isRunning == 0) {
+                        gameArea.isRunning = 1;
+                        gameArea.player = player;
+                        gameArea.startTime = System.currentTimeMillis();
+                    }
+                    // 挖掘方块
+                    boolean isMine = MapGenerateManager.digBlock(player, pos, gameArea);
+
+                    if (isMine) {
                         gameArea.isRunning = 2;
                         long endTime = System.currentTimeMillis();
                         long timeUsed = (endTime - gameArea.startTime) / 1000; // 转换为秒
-                        player.sendMessage("§a恭喜你！扫雷成功，用时：" + timeUsed + "秒");
-                        player.sendTitle("§a恭喜！","§7游戏结束，用时：" + timeUsed + "秒");
-                        // 保存用时到 player.yml
-                        savePlayerTime(player, gameArea.gameAreaConfig.roomName, timeUsed);
+                        player.sendTitle("§c挑战失败", "§7游戏结束，用时：" + timeUsed + "秒");
+                    } else {
+                        // 检查是否获胜
+                        if (MapGenerateManager.checkWin(gameArea)) {
+                            gameArea.isRunning = 2;
+                            long endTime = System.currentTimeMillis();
+                            long timeUsed = (endTime - gameArea.startTime) / 1000; // 转换为秒
+                            player.sendMessage("§a恭喜你！扫雷成功，用时：" + timeUsed + "秒");
+                            player.sendTitle("§a恭喜！", "§7游戏结束，用时：" + timeUsed + "秒");
+                            // 保存用时到 player.yml
+                            savePlayerTime(player, gameArea.gameAreaConfig.roomName, timeUsed);
 
+                        }
                     }
-                }
 
+                }
             }
         }
     }
