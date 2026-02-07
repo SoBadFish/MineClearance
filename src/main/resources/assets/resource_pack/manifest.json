@@ -4,14 +4,14 @@
     "description" : "§l§b扫雷专属材质包！",
     "name" : "§l§e扫雷§7材质",
     "uuid" : "e33eadd6-5a34-4a59-98bd-4f9cbbc74e0c",
-    "version" : [ 0, 0, 15 ]
+    "version" : [ 0, 0, 17 ]
   },
   "modules" : [
     {
       "description" : "§l§b扫雷游戏专属材质！",
       "type" : "resources",
       "uuid" : "474b5a62-32d8-472c-b964-7802fce2d9ba",
-      "version" : [ 0, 0, 15 ]
+      "version" : [ 0, 0, 17 ]
     }
   ]
 }

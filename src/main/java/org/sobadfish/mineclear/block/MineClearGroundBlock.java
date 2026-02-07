@@ -5,6 +5,7 @@ import cn.nukkit.block.custom.CustomBlockManager;
 import cn.nukkit.block.custom.container.CustomBlock;
 import cn.nukkit.block.custom.container.data.Materials;
 import cn.nukkit.block.custom.properties.BlockProperties;
+import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.Vector3f;
 import cn.nukkit.network.protocol.types.inventory.creative.CreativeItemCategory;
@@ -28,7 +29,6 @@ public class MineClearGroundBlock extends CustomBlock {
                 CustomBlockDefinition.builder(new MineClearGroundBlock())
                         .creativeCategory(CreativeItemCategory.NATURE)
                         .materials(materials)
-                        .texture("block_ground")
                         .geometry("geometry.mine.clear.ground")
                         .collisionBox(
                                 new Vector3f(-8, 0.0f, -8),
@@ -48,22 +48,13 @@ public class MineClearGroundBlock extends CustomBlock {
 
     @Override
     public String getName() {
-        return this.getClass().getSimpleName().replace("Block", "");
+        return "扫雷区域";
     }
 
-    @Override
-    public double getHardness() {
-        return 2.0;
-    }
-
-    @Override
-    public double getResistance() {
-        return 3.0;
-    }
 
     @Override
     public int getToolType() {
-        return ItemTool.TYPE_AXE;
+        return ItemTool.TYPE_NONE;
     }
 
     @Override

@@ -29,7 +29,6 @@ public class MineClearDisplayBlock extends CustomBlock {
                 CustomBlockDefinition.builder(new MineClearDisplayBlock())
                         .creativeCategory(CreativeItemCategory.NATURE)
                         .materials(materials)
-                        .texture("block_display")
                         .geometry("geometry.mine.clear.display")
                         .collisionBox(
                                 new Vector3f(-8, 0.0f, -8),
@@ -49,18 +48,9 @@ public class MineClearDisplayBlock extends CustomBlock {
 
     @Override
     public String getName() {
-        return this.getClass().getSimpleName().replace("Block", "");
+        return "底座";
     }
 
-    @Override
-    public double getHardness() {
-        return 2.0;
-    }
-
-    @Override
-    public double getResistance() {
-        return 3.0;
-    }
 
     @Override
     public int getToolType() {
