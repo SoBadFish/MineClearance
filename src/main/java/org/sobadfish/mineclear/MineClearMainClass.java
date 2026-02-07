@@ -9,11 +9,9 @@ import cn.nukkit.event.player.PlayerFormRespondedEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 
-import cn.nukkit.form.element.ElementInput;
-import cn.nukkit.form.element.ElementSlider;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
-import cn.nukkit.form.window.FormWindowCustom;
+
 import cn.nukkit.form.window.FormWindowModal;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
