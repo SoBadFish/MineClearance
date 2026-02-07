@@ -52,6 +52,7 @@ public class MineClearMainClass extends PluginBase implements Listener {
 
     public LinkedHashMap<String,GameArea> gameAreas = new LinkedHashMap<>();
 
+
     public void loadGameAreas(){
         for(String key : gameConfigAreas.keySet()){
             GameAreaConfig config = gameConfigAreas.get(key);

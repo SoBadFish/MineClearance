@@ -42,10 +42,9 @@ public class TestCommand extends Command {
 
                 // 显示表单
                 player.showFormWindow(form, MineClearMainClass.FORM_ID_CREATE);
-            }
-            if(args.length > 1) {
+            } else {
                 if(args[0].equalsIgnoreCase("remove")) {
-                    if(args.length > 2) {
+                    if(args.length > 1) {
                         String name = args[1];
                         if(MineClearMainClass.getInstance().gameAreas.containsKey(name)) {
                             GameArea gameArea = MineClearMainClass.getInstance().gameAreas.get(name);
