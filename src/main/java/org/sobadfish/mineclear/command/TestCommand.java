@@ -9,12 +9,14 @@ import cn.nukkit.form.element.ElementInput;
 import cn.nukkit.form.element.ElementSlider;
 import cn.nukkit.form.window.FormWindowCustom;
 import cn.nukkit.level.Level;
-import org.sobadfish.mineclear.MineClearMainClass;
 import org.sobadfish.mineclear.entity.MineClearMineEntity;
 import org.sobadfish.mineclear.entity.MineClearNumberEntity;
 import org.sobadfish.mineclear.entity.MineClearPieceEntity;
 import org.sobadfish.mineclear.game.GameArea;
 import org.sobadfish.mineclear.game.GameAreaConfig;
+import org.sobadfish.mineclear.MineClearMainClass;
+
+
 
 public class TestCommand extends Command {
 
@@ -97,7 +99,7 @@ public class TestCommand extends Command {
 
 
                     }
-                    sender.sendMessage("已清空所有地图中相关的实体");
+                    sender.sendMessage(MineClearMainClass.I18N.tr(((Player) sender).getLanguageCode(), "mineclear.other.cleared"));
 
 
                 }

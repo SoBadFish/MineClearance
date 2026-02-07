@@ -30,3 +30,6 @@ mineclear.form.reset.no=不了
 # 日志相关
 mineclear.log.starting=扫雷游戏正在启动
 mineclear.log.stopping=扫雷游戏正在关闭，还原游戏区域...
+
+# 其他
+mineclear.other.cleared=已清空所有地图中相关的实体

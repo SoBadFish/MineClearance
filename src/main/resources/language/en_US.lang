@@ -30,3 +30,6 @@ mineclear.form.reset.no=No
 # Log related
 mineclear.log.starting=Mine clearance game is starting
 mineclear.log.stopping=Mine clearance game is closing, restoring game area...
+
+# Other
+mineclear.other.cleared=All related entities in all maps have been cleared
