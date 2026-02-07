@@ -9,21 +9,12 @@ import cn.nukkit.form.element.ElementInput;
 import cn.nukkit.form.element.ElementSlider;
 import cn.nukkit.form.window.FormWindowCustom;
 import cn.nukkit.level.Level;
-import cn.nukkit.level.Position;
+import org.sobadfish.mineclear.MineClearMainClass;
 import org.sobadfish.mineclear.entity.MineClearMineEntity;
 import org.sobadfish.mineclear.entity.MineClearNumberEntity;
 import org.sobadfish.mineclear.entity.MineClearPieceEntity;
 import org.sobadfish.mineclear.game.GameArea;
 import org.sobadfish.mineclear.game.GameAreaConfig;
-import org.sobadfish.mineclear.manager.MapGenerateManager;
-import org.sobadfish.mineclear.MineClearMainClass;
-import cn.nukkit.utils.Config;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class TestCommand extends Command {
 

@@ -4,8 +4,6 @@ import cn.nukkit.block.custom.CustomBlockDefinition;
 import cn.nukkit.block.custom.CustomBlockManager;
 import cn.nukkit.block.custom.container.CustomBlock;
 import cn.nukkit.block.custom.container.data.Materials;
-import cn.nukkit.block.custom.properties.BlockProperties;
-import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.Vector3f;
 import cn.nukkit.network.protocol.types.inventory.creative.CreativeItemCategory;

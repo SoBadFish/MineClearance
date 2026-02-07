@@ -1,10 +1,8 @@
 package org.sobadfish.mineclear.entity;
 
 import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.EntityClimateVariant;
 import cn.nukkit.entity.custom.CustomEntity;
 import cn.nukkit.entity.custom.EntityDefinition;
-import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
