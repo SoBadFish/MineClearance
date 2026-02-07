@@ -4,8 +4,8 @@
 		{
 			"description": {
 				"identifier": "geometry.mine.clear.display",
-				"texture_width": 32,
-				"texture_height": 32,
+				"texture_width": 16,
+				"texture_height": 16,
 				"visible_bounds_width": 3,
 				"visible_bounds_height": 3,
 				"visible_bounds_offset": [0, 0.5, 0]
@@ -19,12 +19,12 @@
 							"origin": [-8, 0, -8],
 							"size": [16, 8, 16],
 							"uv": {
-								"north": {"uv": [0, 15], "uv_size": [16, 17]},
-								"east": {"uv": [16, 15], "uv_size": [16, 17]},
-								"south": {"uv": [0, 15], "uv_size": [16, 17]},
-								"west": {"uv": [16, 15], "uv_size": [16, 17]},
-								"up": {"uv": [16, 15], "uv_size": [-16, -14]},
-								"down": {"uv": [32, 15], "uv_size": [-16, -14]}
+								"north": {"uv": [0, 0], "uv_size": [16, 16]},
+								"east": {"uv": [0, 0], "uv_size": [16, 16]},
+								"south": {"uv": [0, 0], "uv_size": [16, 16]},
+								"west": {"uv": [0, 0], "uv_size": [16, 16]},
+								"up": {"uv": [16, 16], "uv_size": [-16, -16]},
+								"down": {"uv": [16, 16], "uv_size": [-16, -16]}
 							}
 						}
 					]
