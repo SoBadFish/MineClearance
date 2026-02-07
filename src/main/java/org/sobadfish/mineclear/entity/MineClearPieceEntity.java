@@ -45,10 +45,10 @@ public class MineClearPieceEntity extends Entity implements CustomEntity {
 
     @Override
     public void saveNBT() {
-        super.saveNBT();
-        if (roomName != null) {
-            this.namedTag.putString("roomName", roomName);
-        }
+//        super.saveNBT();
+//        if (roomName != null) {
+//            this.namedTag.putString("roomName", roomName);
+//        }
     }
 
 

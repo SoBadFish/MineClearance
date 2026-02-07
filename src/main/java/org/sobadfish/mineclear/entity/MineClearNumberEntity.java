@@ -38,6 +38,7 @@ public class MineClearNumberEntity extends Entity implements CustomEntity, Entit
         if(this.namedTag.contains("roomName")){
             this.roomName = this.namedTag.getString("roomName");
         }
+        setScale(0.7f);
 
     }
 
@@ -68,11 +69,11 @@ public class MineClearNumberEntity extends Entity implements CustomEntity, Entit
 
     @Override
     public void saveNBT() {
-        super.saveNBT();
-        if (roomName != null) {
-            this.namedTag.putString("roomName", roomName);
-        }
-        this.namedTag.putInt("number", number);
+//        super.saveNBT();
+//        if (roomName != null) {
+//            this.namedTag.putString("roomName", roomName);
+//        }
+//        this.namedTag.putInt("number", number);
     }
 
     @Override

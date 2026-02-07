@@ -242,7 +242,7 @@ public class MineClearMainClass extends PluginBase implements Listener {
         }
         //GameRoom 重置
         for (GameArea gameArea : gameAreas.values()) {
-            gameArea.resetGame();
+            gameArea.clear();
         }
     }
 

@@ -44,8 +44,8 @@ public class MineClearMineEntity extends Entity implements CustomEntity {
 
     @Override
     public void saveNBT() {
-        super.saveNBT();
-        this.namedTag.putString("roomName",roomName);
+//        super.saveNBT();
+//        this.namedTag.putString("roomName",roomName);
     }
 
     @Override
