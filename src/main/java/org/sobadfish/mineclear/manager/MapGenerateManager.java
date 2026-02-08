@@ -3,29 +3,21 @@ package org.sobadfish.mineclear.manager;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockGravel;
-import cn.nukkit.block.BlockStairsAndesite;
-import cn.nukkit.block.BlockStairsAndesitePolished;
-import cn.nukkit.block.BlockStone;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.ParticleEffect;
 import cn.nukkit.level.Position;
 import cn.nukkit.level.Sound;
 import cn.nukkit.nbt.tag.CompoundTag;
-import org.sobadfish.mineclear.block.MineClearDisplayBlock;
-import org.sobadfish.mineclear.block.MineClearGroundBlock;
+import cn.nukkit.utils.Config;
+import org.sobadfish.mineclear.MineClearMainClass;
 import org.sobadfish.mineclear.entity.MineClearMineEntity;
 import org.sobadfish.mineclear.entity.MineClearNumberEntity;
 import org.sobadfish.mineclear.entity.MineClearPieceEntity;
 import org.sobadfish.mineclear.game.GameArea;
 import org.sobadfish.mineclear.game.GameAreaConfig;
-import cn.nukkit.utils.Config;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+
+import java.util.*;
 
 /**
  * 扫雷地图生成器
@@ -121,8 +113,8 @@ public class MapGenerateManager {
         for (int x = gameArea.gameAreaConfig.startX; x <= gameArea.gameAreaConfig.endX; x++) {
             for (int z = gameArea.gameAreaConfig.startZ; z <= gameArea.gameAreaConfig.endZ; z++) {
                 Position pos = new Position(x, gameArea.gameAreaConfig.y, z, level);
-                level.setBlock(pos, new MineClearDisplayBlock());
-                level.setBlock(pos.add(0,-1,0),new MineClearGroundBlock());
+                level.setBlock(pos, MineClearMainClass.getInstance().getDisplayBlock());
+                level.setBlock(pos.add(0,-1,0),MineClearMainClass.getInstance().getGroundBlock());
             }
         }
         

@@ -1,0 +1,12 @@
+# 显示的未知方块
+# 插件提供了自定义方块 mineclear:display
+# 这里可以用半砖沙石代替 44:1
+# 自定义方块为: mineclear:display
+# 特殊值请用 _ 代替
+block-display: "44_1"
+
+# 这里是地板方块:
+# 插件提供了自定义方块 mineclear:ground
+# 这里可以用灰色混凝土代替 236:7
+# 自定义方块为: mineclear:ground
+block-ground: "236_7"

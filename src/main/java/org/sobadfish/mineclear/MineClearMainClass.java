@@ -2,6 +2,9 @@ package org.sobadfish.mineclear;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockConcrete;
+import cn.nukkit.block.custom.CustomBlockManager;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.custom.EntityManager;
 import cn.nukkit.event.EventHandler;
@@ -21,8 +24,6 @@ import cn.nukkit.level.Position;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.PluginTask;
 import cn.nukkit.utils.Config;
-import org.sobadfish.mineclear.block.MineClearDisplayBlock;
-import org.sobadfish.mineclear.block.MineClearGroundBlock;
 import org.sobadfish.mineclear.command.TestCommand;
 import org.sobadfish.mineclear.entity.MineClearMineEntity;
 import org.sobadfish.mineclear.entity.MineClearNumberEntity;
@@ -50,6 +51,11 @@ public class MineClearMainClass extends PluginBase implements Listener {
     public LinkedHashMap<String,GameArea> gameAreas = new LinkedHashMap<>();
 
 
+    public Block blockDisplay;
+
+    public Block blockGround;
+
+
     public void loadGameAreas(){
         for(String key : gameConfigAreas.keySet()){
             GameAreaConfig config = gameConfigAreas.get(key);
@@ -67,14 +73,38 @@ public class MineClearMainClass extends PluginBase implements Listener {
         EntityManager.get().registerDefinition(MineClearNumberEntity.DEF_NUMBER);
         EntityManager.get().registerDefinition(MineClearMineEntity.DEF_NUMBER);
         EntityManager.get().registerDefinition(MineClearPieceEntity.DEF_NUMBER);
-        MineClearDisplayBlock.register();
-        MineClearGroundBlock.register();
+        // 只有 新版核心才支持自定义方块
+
+        boolean loaded = false;
+        try{
+            Class.forName("cn.nukkit.block.custom.container.CustomBlock");
+            loaded = true;
+        }catch (Exception ignore){}
+        if(loaded) {
+            org.sobadfish.mineclear.block.MineClearDisplayBlock.register();
+            org.sobadfish.mineclear.block.MineClearGroundBlock.register();
+        }
         
         // 注册插件的 i18n
         I18N = PluginI18nManager.register(this);
         initServerLangCode();
     }
-    
+
+    public Block getDisplayBlock() {
+        if(blockDisplay != null){
+            return blockDisplay;
+        }
+        return Block.get(44,1);
+    }
+
+
+    public Block getGroundBlock() {
+        if(blockGround != null){
+            return blockGround;
+        }
+        return new BlockConcrete(7);
+    }
+
     /**
      * 初始化服务器语言代码
      */
@@ -104,6 +134,8 @@ public class MineClearMainClass extends PluginBase implements Listener {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+        reloadConfig();
         this.getLogger().info(I18N.tr(serverLangCode, "mineclear.log.starting"));
         this.getServer().getCommandMap().register("mineclear",new TestCommand("mt"));
         this.getServer().getPluginManager().registerEvents(this,this);
@@ -118,9 +150,45 @@ public class MineClearMainClass extends PluginBase implements Listener {
                 loadGameAreas();
             }
         }, 10);
+        //TODO 加载方块
+        loadBlocks();
        
     }
-    
+
+    private void loadBlocks() {
+        Config config = getConfig();
+        String display = config.getString("block-display","44_1");
+        this.blockDisplay = loadBlockOfStr(display);
+        String ground = config.getString("block-ground","236_7");
+        this.blockGround = loadBlockOfStr(ground);
+    }
+
+    public Block loadBlockOfStr(String str){
+        String[] ex1 = str.split("_");
+        String id = ex1[0];
+        Block block;
+        int damage = 0;
+        if(ex1.length > 1){
+            damage = Integer.parseInt(ex1[1]);
+        }
+        if(isNumber(id)){
+            block = Block.get(Integer.parseInt(id),damage);
+        }else{
+            int bid = CustomBlockManager.get().getBlockId(id);
+            block = Block.get(bid,damage);
+        }
+        return block;
+    }
+
+    public boolean isNumber(String chunkNUmber){
+        try {
+            Integer.parseInt(chunkNUmber);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
     @Override
     public void onDisable() {
         this.getLogger().info(I18N.tr(serverLangCode, "mineclear.log.stopping"));
