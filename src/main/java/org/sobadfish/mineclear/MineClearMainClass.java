@@ -349,14 +349,19 @@ public class MineClearMainClass extends PluginBase implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if(event.getAction() == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+        if(event.getAction() == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK
+        || (event.getPlayer().getLoginChainData().getDeviceOS() != 7 && event.getAction() == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK)
+        ) {
             Player player = event.getPlayer();
             //TODO 根据交互的位置与坐标范围 获取房间
             Position pos = event.getBlock();
             GameArea gameArea = null;
             for (GameArea rArea : gameAreas.values()) {
                 if (rArea.gameAreaConfig.startX <= (int) pos.x && (int) pos.x <= rArea.gameAreaConfig.endX &&
-                        rArea.gameAreaConfig.startZ <= (int) pos.z && (int) pos.z <= rArea.gameAreaConfig.endZ) {
+                        rArea.gameAreaConfig.startZ <= (int) pos.z && (int) pos.z <= rArea.gameAreaConfig.endZ
+                        && rArea.gameAreaConfig.levelName.equalsIgnoreCase(event.getBlock().level.getFolderName())
+
+                ) {
                     // 点击的位置在当前游戏区域内
                     gameArea = rArea;
                     break;
@@ -398,7 +403,10 @@ public class MineClearMainClass extends PluginBase implements Listener {
                         gameArea.isRunning = 2;
                         long endTime = System.currentTimeMillis();
                         long timeUsed = (endTime - gameArea.startTime) / 1000; // 转换为秒
-                        player.sendTitle("§c挑战失败", "§7游戏结束，用时：" + timeUsed + "秒");
+                        player.sendTitle(
+                                I18N.tr(player.getLanguageCode(), "mineclear.title.fail"),
+                                I18N.tr(player.getLanguageCode(), "mineclear.title.time", String.valueOf(timeUsed))
+                        );
                         player.sendMessage(I18N.tr(player.getLanguageCode(), "mineclear.game.mine", String.valueOf(timeUsed)));
                     } else {
                         // 检查是否获胜
@@ -407,7 +415,10 @@ public class MineClearMainClass extends PluginBase implements Listener {
                             long endTime = System.currentTimeMillis();
                             long timeUsed = (endTime - gameArea.startTime) / 1000; // 转换为秒
                             player.sendMessage(I18N.tr(player.getLanguageCode(), "mineclear.game.win", String.valueOf(timeUsed)));
-                            player.sendTitle("§a恭喜！", "§7游戏结束，用时：" + timeUsed + "秒");
+                            player.sendTitle(
+                                    I18N.tr(player.getLanguageCode(), "mineclear.title.win"),
+                                    I18N.tr(player.getLanguageCode(), "mineclear.title.time", String.valueOf(timeUsed))
+                            );
                             // 保存用时到 player.yml
                             savePlayerTime(player, gameArea.gameAreaConfig.roomName, timeUsed);
 

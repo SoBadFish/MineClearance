@@ -33,3 +33,8 @@ mineclear.log.stopping=扫雷游戏正在关闭，还原游戏区域...
 
 # 其他
 mineclear.other.cleared=已清空所有地图中相关的实体
+
+# 标题
+mineclear.title.fail=§c挑战失败
+mineclear.title.win=§a恭喜！
+mineclear.title.time=§7游戏结束，用时：{%0}秒
