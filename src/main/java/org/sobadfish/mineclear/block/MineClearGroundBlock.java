@@ -29,18 +29,20 @@ public class MineClearGroundBlock extends ProxyCustomBlock {
                 Class<?> renderMethodClass = Class.forName("cn.nukkit.block.custom.container.data.Materials$RenderMethod");
                 Object opaqueRender = renderMethodClass.getField("OPAQUE").get(null);
 
-                // Materials.builder().any(OPAQUE, "block_ground").build()
+                // Materials.builder().any(OPAQUE, "block_ground")
                 Method materialsBuilderMethod = materialsClass.getMethod("builder");
-                Object materialsBuilder = materialsBuilderMethod.invoke(null);
-                Method anyMethod = materialsBuilder.getClass().getMethod("any", renderMethodClass, String.class);
-                anyMethod.invoke(materialsBuilder, opaqueRender, "block_ground");
-                Object materials = materialsBuilder.getClass().getMethod("build").invoke(materialsBuilder);
+                Object materials = materialsBuilderMethod.invoke(null);
+                Method anyMethod = materials.getClass().getMethod("any", renderMethodClass, String.class);
+                anyMethod.invoke(materials, opaqueRender, "block_ground");
 
                 // ========== 2. 反射构建CustomBlockDefinition ==========
                 Class<?> cbdClass = Class.forName("cn.nukkit.block.custom.CustomBlockDefinition");
-                Class<?> customBlockClass = Class.forName("cn.nukkit.block.custom.container.CustomBlock");
-                Method cbdBuilderMethod = cbdClass.getMethod("builder", customBlockClass);
-                Object cbdBuilder = cbdBuilderMethod.invoke(null, new MineClearGroundBlock());
+                // builder方法的参数类型是BlockContainer接口
+                Class<?> blockContainerClass = Class.forName("cn.nukkit.block.custom.container.BlockContainer");
+                Method cbdBuilderMethod = cbdClass.getMethod("builder", blockContainerClass);
+                // 通过customBlockDelegate传入CustomBlock实例（实现了BlockContainer接口）
+                MineClearGroundBlock groundBlock = new MineClearGroundBlock();
+                Object cbdBuilder = cbdBuilderMethod.invoke(null, groundBlock.getCustomBlockDelegate());
 
                 // 设置创意分类
                 Class<?> creativeCatClass = Class.forName("cn.nukkit.network.protocol.types.inventory.creative.CreativeItemCategory");
@@ -77,13 +79,15 @@ public class MineClearGroundBlock extends ProxyCustomBlock {
                 Class<?> cbmClass = Class.forName("cn.nukkit.block.custom.CustomBlockManager");
                 Object cbmInstance = cbmClass.getMethod("get").invoke(null);
 
-                // 动态代理创建Supplier<BlockContainer>实例
+                // 创建Supplier<BlockContainer>，返回CustomBlock实例（实现了BlockContainer接口）
+                Class<?> customBlockClass = Class.forName("cn.nukkit.block.custom.container.CustomBlock");
+                java.lang.reflect.Constructor<?> customBlockCtor = customBlockClass.getConstructor(String.class);
                 Object supplier = java.lang.reflect.Proxy.newProxyInstance(
                         Thread.currentThread().getContextClassLoader(),
                         new Class[]{Class.forName("java.util.function.Supplier")},
                         (proxy, method, args) -> {
                             if ("get".equals(method.getName())) {
-                                return new MineClearGroundBlock();
+                                return customBlockCtor.newInstance(BlockManager.BLOCK_GROUND_NAME);
                             }
                             return method.invoke(proxy, args);
                         }
