@@ -49,10 +49,6 @@ public class MineClearGroundBlock extends CustomBlock {
         return "扫雷区域";
     }
 
-    @Override
-    public int getId() {
-        return 0;
-    }
 
 
     @Override
