@@ -24,6 +24,8 @@ import cn.nukkit.level.Position;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.PluginTask;
 import cn.nukkit.utils.Config;
+import org.sobadfish.mineclear.block.MineClearDisplayBlock;
+import org.sobadfish.mineclear.block.MineClearGroundBlock;
 import org.sobadfish.mineclear.command.TestCommand;
 import org.sobadfish.mineclear.entity.MineClearMineEntity;
 import org.sobadfish.mineclear.entity.MineClearNumberEntity;
@@ -81,8 +83,8 @@ public class MineClearMainClass extends PluginBase implements Listener {
             loaded = true;
         }catch (Exception ignore){}
         if(loaded) {
-            org.sobadfish.mineclear.block.MineClearDisplayBlock.register();
-            org.sobadfish.mineclear.block.MineClearGroundBlock.register();
+            MineClearDisplayBlock.register();
+            MineClearGroundBlock.register();
         }
         
         // 注册插件的 i18n
